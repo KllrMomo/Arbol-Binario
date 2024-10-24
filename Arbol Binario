@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Nodo {
+    int dato;
+    struct Nodo* left;
+    struct Nodo* right;
+};
+
+struct Nodo* crearNodo(int dato) {
+    struct Nodo *nuevoNodo =  malloc(sizeof(struct Nodo));
+    if (nuevoNodo != NULL) {
+        nuevoNodo->dato = dato;
+        nuevoNodo->left = NULL;
+        nuevoNodo->right = NULL;
+    }
+    return nuevoNodo;
+}
+
+struct Nodo* insertarNodo(struct Nodo* padre, int dato) {
+    if (padre == NULL) {
+        return crearNodo(dato);
+    }
+    if (dato == padre->dato) {
+        return padre;
+    }
+    if (dato < padre->dato) {
+        padre->left = insertarNodo(padre->left, dato);
+    } else {
+        padre->right = insertarNodo(padre->right, dato);
+    }
+    return padre;
+}
+
+void imprimirPreOrden(struct Nodo* root) {
+    if (root != NULL) {
+        printf("%d ", root->dato);
+        imprimirPreOrden(root->left);
+        imprimirPreOrden(root->right);
+    }
+}
+
+void imprimirInOrden(struct Nodo* root) {
+    if (root != NULL) {
+        imprimirInOrden(root->left);
+        printf("%d ", root->dato);
+        imprimirInOrden(root->right);
+    }
+}
+
+void imprimirPostOrden(struct Nodo* root) {
+    if (root != NULL) {
+        imprimirPostOrden(root->left);
+        imprimirPostOrden(root->right);
+        printf("%d ", root->dato);
+    }
+}
+
+int main() {
+    struct Nodo* root = crearNodo(5);
+    insertarNodo(root, 6);
+    insertarNodo(root, 4);
+    insertarNodo(root, 3);
+    insertarNodo(root, 2);
+    insertarNodo(root, 1);
+    insertarNodo(root, 8);
+    insertarNodo(root, 9);
+    insertarNodo(root, 7);
+
+    printf("Preorden: ");
+    imprimirPreOrden(root);
+    printf("\n");
+
+    printf("Inorden: ");
+    imprimirInOrden(root);
+    printf("\n");
+
+    printf("Postorden: ");
+    imprimirPostOrden(root);
+    printf("\n");
+
+    return 0;
+}
